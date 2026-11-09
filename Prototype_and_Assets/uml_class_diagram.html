@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Horizon Private Training College - SIS UML &amp; Crow's Foot Class Diagram</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 2400px;
+    height: 1680px;
+    background: #f8fafc;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #0f172a;
+    overflow: hidden;
+    position: relative;
+  }
+  /* Header Banner */
+  .diagram-header {
+    position: absolute;
+    top: 14px;
+    left: 24px;
+    right: 24px;
+    height: 64px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  }
+  .diagram-header h1 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .diagram-header .subtitle {
+    font-size: 13px;
+    color: #cbd5e1;
+    font-weight: 500;
+  }
+  .diagram-header .badge-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .header-badge {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.28);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #f8fafc;
+  }
+
+  /* SVG Connector Layer */
+  svg.connections {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2400px;
+    height: 1680px;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* UML Class Boxes */
+  .uml-class {
+    position: absolute;
+    background: #ffffff;
+    border: 2px solid #1e293b;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .uml-class.abstract-class {
+    border-color: #1d4ed8;
+  }
+  .uml-class.assoc-class {
+    border-color: #0f766e;
+  }
+  .uml-class.service-class {
+    border-color: #7c3aed;
+  }
+  .uml-class.enum-class {
+    border-color: #475569;
+    background: #f8fafc;
+  }
+
+  .class-header {
+    background: #f1f5f9;
+    border-bottom: 2px solid #1e293b;
+    padding: 6px 10px;
+    text-align: center;
+    position: relative;
+  }
+  .abstract-class .class-header {
+    background: #eff6ff;
+    border-bottom-color: #1d4ed8;
+  }
+  .assoc-class .class-header {
+    background: #f0fdfa;
+    border-bottom-color: #0f766e;
+  }
+  .service-class .class-header {
+    background: #f5f3ff;
+    border-bottom-color: #7c3aed;
+  }
+  .enum-class .class-header {
+    background: #e2e8f0;
+    border-bottom-color: #475569;
+    padding: 5px 8px;
+  }
+
+  .header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+  }
+  .stereotype {
+    font-size: 11px;
+    color: #475569;
+    font-style: italic;
+    font-weight: 600;
+  }
+  .fr-tag {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.2px;
+  }
+  .assoc-class .fr-tag {
+    background: #ccfbf1;
+    color: #115e59;
+    border-color: #5eead4;
+  }
+  .service-class .fr-tag {
+    background: #ede9fe;
+    color: #5b21b6;
+    border-color: #c4b5fd;
+  }
+
+  .class-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+  }
+  .abstract-class .class-name {
+    font-style: italic;
+    color: #1e3a8a;
+  }
+
+  .compartment {
+    padding: 5px 9px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 10.6px;
+    line-height: 1.35;
+    color: #1e293b;
+  }
+  .compartment.attributes {
+    border-bottom: 1.5px solid #334155;
+    background: #ffffff;
+  }
+  .compartment.operations {
+    background: #fcfcfd;
+    flex: 1;
+  }
+  .member {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .vis {
+    font-weight: 700;
+    color: #0284c7;
+    display: inline-block;
+    width: 12px;
+  }
+  .pk {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 0 3px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .fk {
+    background: #e0e7ff;
+    color: #3730a3;
+    border: 1px solid #a5b4fc;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 0 3px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .type {
+    color: #0f766e;
+    font-weight: 600;
+  }
+  .op-name {
+    color: #1e293b;
+    font-weight: 600;
+  }
+  .op-req {
+    color: #b45309;
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 3px;
+  }
+
+  /* Legend Box */
+  .legend-box {
+    position: absolute;
+    background: #ffffff;
+    border: 2px solid #1e3a8a;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    z-index: 2;
+    overflow: hidden;
+  }
+  .legend-header {
+    background: #1e3a8a;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 14px;
+    letter-spacing: 0.3px;
+  }
+  .legend-content {
+    padding: 8px 14px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .legend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 12px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .legend-symbol {
+    font-family: Consolas, monospace;
+    font-weight: 800;
+    color: #1e3a8a;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    min-width: 72px;
+    text-align: center;
+  }
+
+  /* Relationship Labels */
+  .rel-label {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    fill: #1e293b;
+  }
+  .mult-label {
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    font-weight: 800;
+    fill: #0f172a;
+  }
+  .label-bg {
+    fill: #f8fafc;
+    opacity: 0.94;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header Banner -->
+  <div class="diagram-header">
+    <div>
+      <h1>HORIZON PRIVATE TRAINING COLLEGE — STUDENT INFORMATION SYSTEM (SIS)</h1>
+      <div class="subtitle">Combined UML 2.5 &amp; Crow's Foot Notation Class Diagram with PK/FK Keys, Attributes, Operations, Cardinalities &amp; Traceability (Sommerville, 10th Ed.)</div>
+    </div>
+    <div class="badge-group">
+      <div class="header-badge">Question 2 [30 Marks]</div>
+      <div class="header-badge">UML 2.5 + Crow's Foot Notation (||, o&lt;, |&lt;)</div>
+      <div class="header-badge">100% Traceable: FR-01 to FR-10</div>
+    </div>
+  </div>
+
+  <!-- SVG Layer for All UML + Crow's Foot Connectors -->
+  <svg class="connections" viewBox="0 0 2400 1680">
+    <defs>
+      <!-- UML Composition (Filled Diamond) + Crow's Foot Mandatory One || (Start) -->
+      <marker id="uml-comp-one" viewBox="0 0 32 16" refX="1" refY="8" markerWidth="28" markerHeight="14" orient="auto">
+        <polygon points="1,8 9,2 17,8 9,14" fill="#0f172a" stroke="#0f172a" stroke-width="1.5"/>
+        <line x1="21" y1="2" x2="21" y2="14" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="26" y1="2" x2="26" y2="14" stroke="#0f172a" stroke-width="2.2"/>
+      </marker>
+
+      <!-- UML Aggregation (Hollow Diamond) + Crow's Foot Mandatory One || (Start) -->
+      <marker id="uml-aggr-one" viewBox="0 0 32 16" refX="1" refY="8" markerWidth="28" markerHeight="14" orient="auto">
+        <polygon points="1,8 9,2 17,8 9,14" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+        <line x1="21" y1="2" x2="21" y2="14" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="26" y1="2" x2="26" y2="14" stroke="#0f172a" stroke-width="2.2"/>
+      </marker>
+
+      <!-- Crow's Foot Mandatory One || (Start) -->
+      <marker id="cf-one-start" viewBox="0 0 20 16" refX="1" refY="8" markerWidth="18" markerHeight="14" orient="auto">
+        <line x1="6" y1="2" x2="6" y2="14" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="12" y1="2" x2="12" y2="14" stroke="#0f172a" stroke-width="2.2"/>
+      </marker>
+
+      <!-- Crow's Foot Mandatory One || (End) -->
+      <marker id="cf-one-end" viewBox="0 0 20 16" refX="19" refY="8" markerWidth="18" markerHeight="14" orient="auto">
+        <line x1="8" y1="2" x2="8" y2="14" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="14" y1="2" x2="14" y2="14" stroke="#0f172a" stroke-width="2.2"/>
+      </marker>
+
+      <!-- Crow's Foot One-or-Many |< (Start) -->
+      <marker id="cf-one-many-start" viewBox="0 0 24 18" refX="1" refY="9" markerWidth="22" markerHeight="16" orient="auto">
+        <line x1="15" y1="2" x2="15" y2="16" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="15" y1="9" x2="1" y2="2" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="15" y1="9" x2="1" y2="9" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="15" y1="9" x2="1" y2="16" stroke="#0f172a" stroke-width="2.2"/>
+      </marker>
+
+      <!-- Crow's Foot One-or-Many |< (End) -->
+      <marker id="cf-one-many-end" viewBox="0 0 24 18" refX="23" refY="9" markerWidth="22" markerHeight="16" orient="auto">
+        <line x1="8" y1="2" x2="8" y2="16" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="8" y1="9" x2="23" y2="2" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="8" y1="9" x2="23" y2="9" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="8" y1="9" x2="23" y2="16" stroke="#0f172a" stroke-width="2.2"/>
+      </marker>
+
+      <!-- Crow's Foot Zero-or-Many o< (End) -->
+      <marker id="cf-zero-many-end" viewBox="0 0 28 18" refX="27" refY="9" markerWidth="25" markerHeight="16" orient="auto">
+        <circle cx="7" cy="9" r="4.5" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+        <line x1="12" y1="9" x2="27" y2="2" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="12" y1="9" x2="27" y2="9" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="12" y1="9" x2="27" y2="16" stroke="#0f172a" stroke-width="2.2"/>
+      </marker>
+
+      <!-- Crow's Foot Zero-or-Many o< (Start) -->
+      <marker id="cf-zero-many-start" viewBox="0 0 28 18" refX="1" refY="9" markerWidth="25" markerHeight="16" orient="auto">
+        <circle cx="21" cy="9" r="4.5" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+        <line x1="16" y1="9" x2="1" y2="2" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="16" y1="9" x2="1" y2="9" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="16" y1="9" x2="1" y2="16" stroke="#0f172a" stroke-width="2.2"/>
+      </marker>
+
+      <!-- Open Arrow for Dependency (End) -->
+      <marker id="dep-end" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+        <polyline points="1,1 10,6 1,11" fill="none" stroke="#64748b" stroke-width="2"/>
+      </marker>
+    </defs>
+
+    <!-- 1. UML GENERALIZATION / SUBTYPE HIERARCHY: Student, Instructor, Administrator -> User -->
+    <polygon points="880,331 870,348 890,348" fill="#ffffff" stroke="#1d4ed8" stroke-width="2.4"/>
+    <line x1="880" y1="348" x2="880" y2="366" stroke="#1d4ed8" stroke-width="2.2"/>
+    <line x1="265" y1="366" x2="1500" y2="366" stroke="#1d4ed8" stroke-width="2.2"/>
+    <line x1="265" y1="366" x2="265" y2="390" stroke="#1d4ed8" stroke-width="2.2"/>
+    <line x1="880" y1="366" x2="880" y2="390" stroke="#1d4ed8" stroke-width="2.2"/>
+    <line x1="1500" y1="366" x2="1500" y2="390" stroke="#1d4ed8" stroke-width="2.2"/>
+    <rect x="580" y="345" width="250" height="17" class="label-bg"/>
+    <text x="705" y="358" text-anchor="middle" class="rel-label" fill="#1d4ed8">&lt;&lt;UML Generalization / Subtype&gt;&gt; (is-a)</text>
+
+    <!-- 2. ASSOCIATION + CROW'S FOOT: User (1..* |<) <-> Announcement (0..* o<) -->
+    <line x1="1070" y1="210" x2="1300" y2="210" stroke="#0f172a" stroke-width="2.2" marker-start="url(#cf-one-many-start)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="1095" y="198" class="mult-label">1..* (|&lt;)</text>
+    <text x="1225" y="198" class="mult-label">0..* (o&lt;)</text>
+    <rect x="1125" y="216" width="120" height="18" class="label-bg"/>
+    <text x="1185" y="229" text-anchor="middle" class="rel-label">publishes / reads</text>
+
+    <!-- 3. ASSOCIATION + CROW'S FOOT: Administrator (1 ||) -> AnalyticsReport (0..* o<) -->
+    <line x1="1700" y1="520" x2="1850" y2="520" stroke="#0f172a" stroke-width="2.2" marker-start="url(#cf-one-start)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="1715" y="508" class="mult-label">1 (||)</text>
+    <text x="1782" y="508" class="mult-label">0..* (o&lt;)</text>
+    <rect x="1735" y="526" width="80" height="18" class="label-bg"/>
+    <text x="1775" y="539" text-anchor="middle" class="rel-label">compiles</text>
+
+    <!-- 4. COMPOSITION + CROW'S FOOT: Student (1 ♦||) -> StudentRecord (1 ||) -->
+    <line x1="265" y1="675" x2="265" y2="755" stroke="#0f172a" stroke-width="2.2" marker-start="url(#uml-comp-one)" marker-end="url(#cf-one-end)"/>
+    <text x="282" y="702" class="mult-label">1 (♦||)</text>
+    <text x="282" y="742" class="mult-label">1 (||)</text>
+    <rect x="148" y="706" width="106" height="18" class="label-bg"/>
+    <text x="201" y="719" text-anchor="middle" class="rel-label">owns master</text>
+
+    <!-- 5. ASSOCIATION + CROW'S FOOT: Student (1 ||) -> Enrolment (0..* o<) -->
+    <polyline points="460,560 660,560 660,755" fill="none" stroke="#0f172a" stroke-width="2.2" marker-start="url(#cf-one-start)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="478" y="550" class="mult-label">1 (||)</text>
+    <text x="672" y="735" class="mult-label">0..* (o&lt;)</text>
+    <rect x="520" y="566" width="115" height="18" class="label-bg"/>
+    <text x="577" y="579" text-anchor="middle" class="rel-label">submits [FR-02]</text>
+
+    <!-- 6. ASSOCIATION + CROW'S FOOT: Instructor (1..* |<) <-> Course (1..* |<) -->
+    <polyline points="1075,560 1175,560 1175,755" fill="none" stroke="#0f172a" stroke-width="2.2" marker-start="url(#cf-one-many-start)" marker-end="url(#cf-one-many-end)"/>
+    <text x="1096" y="550" class="mult-label">1..* (|&lt;)</text>
+    <text x="1186" y="735" class="mult-label">1..* (|&lt;)</text>
+    <rect x="1125" y="640" width="115" height="18" class="label-bg"/>
+    <text x="1182" y="653" text-anchor="middle" class="rel-label">teaches [FR-09]</text>
+
+    <!-- 7. ASSOCIATION + CROW'S FOOT: Course (1 ||) -> Enrolment (0..* o<) -->
+    <line x1="980" y1="885" x2="910" y2="885" stroke="#0f766e" stroke-width="2.2" marker-start="url(#cf-one-start)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="914" y="870" class="mult-label">0..* (o&lt;)</text>
+    <text x="945" y="906" text-anchor="middle" class="rel-label" fill="#0f766e">1 (||) for course</text>
+
+    <!-- 8. AGGREGATION + CROW'S FOOT: Course (1 ◇||) -> CourseMaterial (0..* o<) -->
+    <line x1="1370" y1="840" x2="1450" y2="840" stroke="#0f172a" stroke-width="2.2" marker-start="url(#uml-aggr-one)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="1375" y="825" class="mult-label">1 (◇||)</text>
+    <text x="1408" y="862" class="mult-label">0..* (o&lt;)</text>
+
+    <!-- 9. AGGREGATION + CROW'S FOOT: Course (1 ◇||) -> ScheduleSlot (1..* |<) -->
+    <polyline points="1280,755 1280,722 2125,722 2125,755" fill="none" stroke="#0f172a" stroke-width="2.2" marker-start="url(#uml-aggr-one)" marker-end="url(#cf-one-many-end)"/>
+    <text x="1294" y="744" class="mult-label">1 (◇||)</text>
+    <text x="2138" y="744" class="mult-label">1..* (|&lt;)</text>
+    <rect x="1630" y="712" width="165" height="18" class="label-bg"/>
+    <text x="1712" y="725" text-anchor="middle" class="rel-label">scheduled in slots [FR-08]</text>
+
+    <!-- 10. ASSOCIATION + CROW'S FOOT: StudentRecord (1 ||) -> Transcript (0..* o<) -->
+    <line x1="265" y1="1025" x2="265" y2="1135" stroke="#0f172a" stroke-width="2.2" marker-start="url(#cf-one-start)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="280" y="1046" class="mult-label">1 (||)</text>
+    <text x="280" y="1118" class="mult-label">0..* (o&lt;)</text>
+    <rect x="125" y="1070" width="132" height="18" class="label-bg"/>
+    <text x="191" y="1083" text-anchor="middle" class="rel-label">certifies [FR-04]</text>
+
+    <!-- 11. COMPOSITION + CROW'S FOOT: Enrolment (1 ♦||) -> AssessmentResult (0..* o<) -->
+    <line x1="720" y1="1025" x2="720" y2="1135" stroke="#0f172a" stroke-width="2.2" marker-start="url(#uml-comp-one)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="735" y="1052" class="mult-label">1 (♦||)</text>
+    <text x="735" y="1118" class="mult-label">0..* (o&lt;)</text>
+    <rect x="595" y="1070" width="118" height="18" class="label-bg"/>
+    <text x="654" y="1083" text-anchor="middle" class="rel-label">records grades</text>
+
+    <!-- 12. DEPENDENCY: AssessmentResult ..> StudentRecord -->
+    <polyline points="460,940 495,940 495,1200 530,1200" fill="none" stroke="#475569" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#dep-end)"/>
+    <rect x="462" y="1045" width="66" height="18" class="label-bg"/>
+    <text x="495" y="1058" text-anchor="middle" class="rel-label">updates</text>
+
+    <!-- 13. ASSOCIATION + CROW'S FOOT: Enrolment (1 ||) -> FeeInvoice (1 ||) -->
+    <polyline points="840,1025 840,1080 1080,1080 1080,1135" fill="none" stroke="#0f172a" stroke-width="2.2" marker-start="url(#cf-one-start)" marker-end="url(#cf-one-end)"/>
+    <text x="854" y="1046" class="mult-label">1 (||)</text>
+    <text x="1092" y="1120" class="mult-label">1 (||)</text>
+    <rect x="900" y="1070" width="135" height="18" class="label-bg"/>
+    <text x="967" y="1083" text-anchor="middle" class="rel-label">generates [FR-05]</text>
+
+    <!-- 14. COMPOSITION + CROW'S FOOT: FeeInvoice (1 ♦||) -> Payment (0..* o<) -->
+    <line x1="1370" y1="1260" x2="1450" y2="1260" stroke="#0f172a" stroke-width="2.2" marker-start="url(#uml-comp-one)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="1375" y="1245" class="mult-label">1 (♦||)</text>
+    <text x="1408" y="1282" class="mult-label">0..* (o&lt;)</text>
+
+    <!-- 15. ASSOCIATION + CROW'S FOOT: FeeInvoice (1 ||) -> PaymentReminder (0..* o<) -->
+    <polyline points="1175,1405 1175,1430 2125,1430 2125,1405" fill="none" stroke="#7c3aed" stroke-width="2.2" marker-start="url(#cf-one-start)" marker-end="url(#cf-zero-many-end)"/>
+    <text x="1188" y="1424" class="mult-label">1 (||)</text>
+    <text x="2138" y="1424" class="mult-label">0..* (o&lt;)</text>
+    <rect x="1555" y="1420" width="195" height="18" class="label-bg"/>
+    <text x="1652" y="1433" text-anchor="middle" class="rel-label" fill="#5b21b6">triggers reminders [FR-06]</text>
+
+    <!-- 16. DEPENDENCY: AnalyticsReport ..> Course, Enrolment, FeeInvoice -->
+    <polyline points="2330,520 2368,520 2368,1095 1250,1095 1250,1135" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#dep-end)"/>
+    <rect x="2235" y="680" width="128" height="18" class="label-bg"/>
+    <text x="2299" y="693" text-anchor="middle" class="rel-label" fill="#475569">&lt;&lt;aggregates data&gt;&gt;</text>
+  </svg>
+
+  <!-- ================= ROW 1: USER, ANNOUNCEMENT, LEGEND ================= -->
+
+  <!-- Class 1: User (Abstract Superclass) -->
+  <div class="uml-class abstract-class" style="left: 690px; top: 92px; width: 380px; height: 238px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;abstract&gt;&gt;</span>
+        <span class="fr-tag">FR-01, FR-07</span>
+      </div>
+      <div class="class-name">User</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">#</span>userId: <span class="type">String</span></div>
+      <div class="member"><span class="vis">#</span>firstName: <span class="type">String</span></div>
+      <div class="member"><span class="vis">#</span>lastName: <span class="type">String</span></div>
+      <div class="member"><span class="vis">#</span>email: <span class="type">String</span></div>
+      <div class="member"><span class="vis">#</span>phoneNumber: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>passwordHash: <span class="type">String</span></div>
+      <div class="member"><span class="vis">#</span>role: <span class="type">UserRole</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">authenticate</span>(email: <span class="type">String</span>, pwd: <span class="type">String</span>): <span class="type">Boolean</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">updateContactProfile</span>(phone: <span class="type">String</span>, email: <span class="type">String</span>): <span class="type">Boolean</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">getNotifications</span>(): <span class="type">List&lt;Announcement&gt;</span> <span class="op-req">[FR-07]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 2: Announcement -->
+  <div class="uml-class" style="left: 1300px; top: 92px; width: 400px; height: 238px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity&gt;&gt;</span>
+        <span class="fr-tag">FR-07</span>
+      </div>
+      <div class="class-name">Announcement</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>announcementId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>authorId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>targetCourseCode: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>targetAudienceRole: <span class="type">UserRole</span></div>
+      <div class="member"><span class="vis">-</span>title: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>messageContent: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>publishedAt: <span class="type">DateTime</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">publishNotice</span>(audience: <span class="type">String</span>): <span class="type">Boolean</span> <span class="op-req">[FR-07]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">dispatchPushAndEmail</span>(): <span class="type">Integer</span> <span class="op-req">[FR-07]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">recordReadReceipt</span>(userId: <span class="type">String</span>): <span class="type">void</span> <span class="op-req">[FR-07]</span></div>
+    </div>
+  </div>
+
+  <!-- Legend Box (UML + Crow's Foot Dual Notation) -->
+  <div class="legend-box" style="left: 1850px; top: 92px; width: 480px; height: 238px;">
+    <div class="legend-header">UML 2.5 &amp; CROW'S FOOT DUAL NOTATION LEGEND</div>
+    <div class="legend-content">
+      <div class="legend-grid">
+        <div class="legend-item"><span class="legend-symbol">|| (1)</span> <span>Mandatory One (Exactly 1)</span></div>
+        <div class="legend-item"><span class="legend-symbol">o&lt; (0..*)</span> <span>Optional Many (Zero or More)</span></div>
+        <div class="legend-item"><span class="legend-symbol">|&lt; (1..*)</span> <span>Mandatory Many (One or More)</span></div>
+        <div class="legend-item"><span class="legend-symbol">───▷</span> <span>UML Generalization (Inherits)</span></div>
+        <div class="legend-item"><span class="legend-symbol">♦||───</span> <span>UML Composition + 1 Parent</span></div>
+        <div class="legend-item"><span class="legend-symbol">◇||───</span> <span>UML Aggregation + 1 Whole</span></div>
+      </div>
+      <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #cbd5e1; font-size: 10.5px; color: #334155;">
+        <strong>Keys &amp; Visibility:</strong> <span class="pk">PK</span> Primary Key &bull; <span class="fk">FK</span> Foreign Key &bull; <code>+</code> Public &bull; <code>-</code> Private &bull; <code>#</code> Protected<br/>
+        <strong>Traceability (Q1 &rarr; Q2):</strong> Every class header &amp; method carries its <code>[FR-01]</code>–<code>[FR-10]</code> tag.<br/>
+        &bull; <strong>FR-01/02:</strong> <code>Student</code>, <code>Course</code>, <code>Enrolment</code> &bull; <strong>FR-03/04:</strong> <code>StudentRecord</code>, <code>Transcript</code><br/>
+        &bull; <strong>FR-05/06:</strong> <code>FeeInvoice</code>, <code>Payment</code>, <code>PaymentReminder</code> &bull; <strong>FR-07/08/09/10:</strong> <code>Announcement</code>, <code>AnalyticsReport</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ROW 2: SUBCLASSES + ANALYTICS REPORT ================= -->
+
+  <!-- Class 3: Student -->
+  <div class="uml-class" style="left: 70px; top: 390px; width: 390px; height: 285px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity / subtype&gt;&gt;</span>
+        <span class="fr-tag">FR-01, FR-02, FR-03, FR-04, FR-05, FR-08</span>
+      </div>
+      <div class="class-name">Student</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>studentNumber: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>nationalIdNumber: <span class="type">String {unique}</span></div>
+      <div class="member"><span class="vis">-</span>dateOfBirth: <span class="type">Date</span></div>
+      <div class="member"><span class="vis">-</span>priorQualification: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>senDisabilityFlag: <span class="type">Boolean</span></div>
+      <div class="member"><span class="vis">-</span>englishMathsSupportRequired: <span class="type">Boolean</span></div>
+      <div class="member"><span class="vis">-</span>financialAidEligible: <span class="type">Boolean</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">registerOnlineProfile</span>(idNum: <span class="type">String</span>): <span class="type">Boolean</span> <span class="op-req">[FR-01]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">enrolInCourse</span>(courseCode: <span class="type">String</span>): <span class="type">Enrolment</span> <span class="op-req">[FR-02]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">viewDigitalRecord</span>(): <span class="type">StudentRecord</span> <span class="op-req">[FR-03]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">downloadVerifiableTranscript</span>(): <span class="type">Transcript</span> <span class="op-req">[FR-04]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">makeTuitionPayment</span>(amount: <span class="type">Decimal</span>): <span class="type">Payment</span> <span class="op-req">[FR-05]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">viewPersonalTimetable</span>(): <span class="type">List&lt;ScheduleSlot&gt;</span> <span class="op-req">[FR-08]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 4: Instructor -->
+  <div class="uml-class" style="left: 685px; top: 390px; width: 390px; height: 285px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity / subtype&gt;&gt;</span>
+        <span class="fr-tag">FR-03, FR-07, FR-08, FR-09</span>
+      </div>
+      <div class="class-name">Instructor</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>staffNumber: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>department: <span class="type">DepartmentType</span></div>
+      <div class="member"><span class="vis">-</span>qualificationLevel: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>allocatedWeeklyHours: <span class="type">Integer</span></div>
+      <div class="member"><span class="vis">-</span>maxTeachingHours: <span class="type">Integer</span></div>
+      <div class="member"><span class="vis">-</span>assignedCohortsCount: <span class="type">Integer</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">captureAssessmentMark</span>(enrolId: <span class="type">String</span>, score: <span class="type">Double</span>): <span class="type">Boolean</span> <span class="op-req">[FR-09]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">flagAtRiskStudent</span>(studentId: <span class="type">String</span>, note: <span class="type">String</span>): <span class="type">void</span> <span class="op-req">[FR-03]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">uploadCourseMaterial</span>(courseCode: <span class="type">String</span>, doc: <span class="type">CourseMaterial</span>): <span class="type">Boolean</span> <span class="op-req">[FR-08]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">postCohortAnnouncement</span>(courseCode: <span class="type">String</span>, msg: <span class="type">String</span>): <span class="type">Announcement</span> <span class="op-req">[FR-07]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">calculateWorkloadUtilization</span>(): <span class="type">Double</span> <span class="op-req">[FR-09]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 5: Administrator -->
+  <div class="uml-class" style="left: 1300px; top: 390px; width: 400px; height: 285px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity / subtype&gt;&gt;</span>
+        <span class="fr-tag">FR-01, FR-03, FR-04, FR-05, FR-10</span>
+      </div>
+      <div class="class-name">Administrator</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>adminStaffId: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>officeDivision: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>securityClearanceLevel: <span class="type">Integer</span></div>
+      <div class="member"><span class="vis">-</span>canApproveCertificates: <span class="type">Boolean</span></div>
+      <div class="member"><span class="vis">-</span>lastAuditTimestamp: <span class="type">DateTime</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">validateNewApplication</span>(studentId: <span class="type">String</span>): <span class="type">Boolean</span> <span class="op-req">[FR-01]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">searchAndManageRecords</span>(query: <span class="type">String</span>): <span class="type">List&lt;StudentRecord&gt;</span> <span class="op-req">[FR-03]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">issueVerifiableCertificate</span>(enrolId: <span class="type">String</span>): <span class="type">Transcript</span> <span class="op-req">[FR-04]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">reconcileFeeLedger</span>(invoiceNo: <span class="type">String</span>): <span class="type">Boolean</span> <span class="op-req">[FR-05]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">generateExecutiveReport</span>(type: <span class="type">String</span>): <span class="type">AnalyticsReport</span> <span class="op-req">[FR-10]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 6: AnalyticsReport -->
+  <div class="uml-class service-class" style="left: 1850px; top: 390px; width: 480px; height: 285px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;service / entity&gt;&gt;</span>
+        <span class="fr-tag">FR-09, FR-10</span>
+      </div>
+      <div class="class-name">AnalyticsReport</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>reportId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>generatedByStaffId: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>academicTermPeriod: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>departmentScope: <span class="type">DepartmentType</span></div>
+      <div class="member"><span class="vis">-</span>passRatePercentage: <span class="type">Double</span></div>
+      <div class="member"><span class="vis">-</span>forecastedNextIntakeCount: <span class="type">Integer</span></div>
+      <div class="member"><span class="vis">-</span>generatedTimestamp: <span class="type">DateTime</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">compileEnrolmentTrends</span>(dept: <span class="type">DepartmentType</span>): <span class="type">Map&lt;String, Integer&gt;</span> <span class="op-req">[FR-10]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">analyzePassAndProgressionRates</span>(): <span class="type">Map&lt;String, Double&gt;</span> <span class="op-req">[FR-10]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">evaluateInstructorWorkloadDistribution</span>(): <span class="type">Map&lt;String, Integer&gt;</span> <span class="op-req">[FR-09]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">forecastFutureEnrolment</span>(historicalTerms: <span class="type">Integer</span>): <span class="type">Integer</span> <span class="op-req">[FR-10]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">exportConsolidatedReport</span>(format: <span class="type">String</span>): <span class="type">ByteArray</span> <span class="op-req">[FR-10]</span></div>
+    </div>
+  </div>
+
+  <!-- ================= ROW 3: CORE ACADEMIC & RECORD CLASSES ================= -->
+
+  <!-- Class 7: StudentRecord -->
+  <div class="uml-class" style="left: 70px; top: 755px; width: 390px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity&gt;&gt;</span>
+        <span class="fr-tag">FR-01, FR-03, FR-09</span>
+      </div>
+      <div class="class-name">StudentRecord</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>recordId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>studentNumber: <span class="type">String {unique}</span></div>
+      <div class="member"><span class="vis">-</span>cumulativeGPA: <span class="type">Double</span></div>
+      <div class="member"><span class="vis">-</span>attendancePercentage: <span class="type">Double</span></div>
+      <div class="member"><span class="vis">-</span>academicStandingStatus: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>supportInterventionNotes: <span class="type">List&lt;String&gt;</span></div>
+      <div class="member"><span class="vis">-</span>lastModifiedAt: <span class="type">DateTime</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">checkDuplicateIdentity</span>(nationalId: <span class="type">String</span>): <span class="type">Boolean</span> <span class="op-req">[FR-01]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">retrieveRecordByQuery</span>(keyword: <span class="type">String</span>): <span class="type">StudentRecord</span> <span class="op-req">[FR-03]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">updateAcademicStanding</span>(): <span class="type">void</span> <span class="op-req">[FR-03]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">recordSupportRequirement</span>(flag: <span class="type">String</span>): <span class="type">void</span> <span class="op-req">[FR-03]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 8: Enrolment -->
+  <div class="uml-class assoc-class" style="left: 530px; top: 755px; width: 380px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;associative entity&gt;&gt;</span>
+        <span class="fr-tag">FR-01, FR-02, FR-03, FR-10</span>
+      </div>
+      <div class="class-name">Enrolment</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>enrolmentId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>studentNumber: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>courseCode: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>intakeCohort: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>enrolmentDate: <span class="type">Date</span></div>
+      <div class="member"><span class="vis">-</span>status: <span class="type">EnrolmentStatus</span></div>
+      <div class="member"><span class="vis">-</span>finalWeightedGrade: <span class="type">Double</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">submitCourseEnrolment</span>(): <span class="type">Boolean</span> <span class="op-req">[FR-02]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">issueEnrolmentConfirmation</span>(): <span class="type">String</span> <span class="op-req">[FR-02]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">computeFinalCourseGrade</span>(): <span class="type">Double</span> <span class="op-req">[FR-03]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">markCourseCompleted</span>(): <span class="type">Boolean</span> <span class="op-req">[FR-04]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 9: Course -->
+  <div class="uml-class" style="left: 980px; top: 755px; width: 390px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity&gt;&gt;</span>
+        <span class="fr-tag">FR-02, FR-08, FR-09, FR-10</span>
+      </div>
+      <div class="class-name">Course</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>courseCode: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>courseTitle: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>department: <span class="type">DepartmentType</span></div>
+      <div class="member"><span class="vis">-</span>programType: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>durationWeeks: <span class="type">Integer</span></div>
+      <div class="member"><span class="vis">-</span>tuitionFeeAmount: <span class="type">Decimal</span></div>
+      <div class="member"><span class="vis">-</span>maxSeatCapacity: <span class="type">Integer</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">checkAvailableSeats</span>(): <span class="type">Integer</span> <span class="op-req">[FR-02]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">verifyPrerequisites</span>(student: <span class="type">Student</span>): <span class="type">Boolean</span> <span class="op-req">[FR-02]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">getCourseResources</span>(): <span class="type">List&lt;CourseMaterial&gt;</span> <span class="op-req">[FR-08]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">getCohortTimetable</span>(): <span class="type">List&lt;ScheduleSlot&gt;</span> <span class="op-req">[FR-08]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 10: CourseMaterial -->
+  <div class="uml-class" style="left: 1450px; top: 755px; width: 410px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity&gt;&gt;</span>
+        <span class="fr-tag">FR-08</span>
+      </div>
+      <div class="class-name">CourseMaterial</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>materialId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>courseCode: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>moduleTopicTitle: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>resourceFormat: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>storageUri: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>fileSizeKB: <span class="type">Integer</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>uploadedByStaffId: <span class="type">String</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">publishMaterial</span>(): <span class="type">Boolean</span> <span class="op-req">[FR-08]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">downloadFileStream</span>(): <span class="type">ByteArray</span> <span class="op-req">[FR-08]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">archiveOutdatedVersion</span>(): <span class="type">void</span> <span class="op-req">[FR-08]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 11: ScheduleSlot -->
+  <div class="uml-class" style="left: 1920px; top: 755px; width: 410px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity&gt;&gt;</span>
+        <span class="fr-tag">FR-07, FR-08</span>
+      </div>
+      <div class="class-name">ScheduleSlot</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>slotId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>courseCode: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>dayOfWeek: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>startTime: <span class="type">Time</span></div>
+      <div class="member"><span class="vis">-</span>endTime: <span class="type">Time</span></div>
+      <div class="member"><span class="vis">-</span>venueRoomOrLab: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>sessionType: <span class="type">String</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">assignVenueAndTime</span>(room: <span class="type">String</span>, start: <span class="type">Time</span>): <span class="type">Boolean</span> <span class="op-req">[FR-08]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">detectTimetableClash</span>(instructorId: <span class="type">String</span>): <span class="type">Boolean</span> <span class="op-req">[FR-08]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">notifyScheduleUpdate</span>(): <span class="type">Announcement</span> <span class="op-req">[FR-07]</span></div>
+    </div>
+  </div>
+
+  <!-- ================= ROW 4: TRANSCRIPT, ASSESSMENT, BILLING & REMINDERS ================= -->
+
+  <!-- Class 12: Transcript -->
+  <div class="uml-class" style="left: 70px; top: 1135px; width: 390px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity&gt;&gt;</span>
+        <span class="fr-tag">FR-01, FR-04</span>
+      </div>
+      <div class="class-name">Transcript</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>credentialId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>recordId: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>credentialType: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>dateIssued: <span class="type">Date</span></div>
+      <div class="member"><span class="vis">-</span>verificationCode: <span class="type">String {unique}</span></div>
+      <div class="member"><span class="vis">-</span>qrVerificationUrl: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>digitalSignatureHash: <span class="type">String</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">generateTamperEvidentPDF</span>(): <span class="type">ByteArray</span> <span class="op-req">[FR-04]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">embedVerificationQRCode</span>(): <span class="type">String</span> <span class="op-req">[FR-04]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">verifyEmployerHashOnline</span>(code: <span class="type">String</span>): <span class="type">Boolean</span> <span class="op-req">[FR-04]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 13: AssessmentResult -->
+  <div class="uml-class" style="left: 530px; top: 1135px; width: 380px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;weak entity&gt;&gt;</span>
+        <span class="fr-tag">FR-03, FR-04, FR-09</span>
+      </div>
+      <div class="class-name">AssessmentResult</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>assessmentId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>enrolmentId: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>assessmentName: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>assessmentCategory: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>weightingPercent: <span class="type">Double</span></div>
+      <div class="member"><span class="vis">-</span>percentageScored: <span class="type">Double</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>gradedByStaffId: <span class="type">String</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">captureStudentScore</span>(score: <span class="type">Double</span>): <span class="type">Boolean</span> <span class="op-req">[FR-09]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">calculateWeightedContribution</span>(): <span class="type">Double</span> <span class="op-req">[FR-03]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">evaluatePassThreshold</span>(): <span class="type">Boolean</span> <span class="op-req">[FR-04]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 14: FeeInvoice -->
+  <div class="uml-class" style="left: 980px; top: 1135px; width: 390px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;entity&gt;&gt;</span>
+        <span class="fr-tag">FR-05, FR-06, FR-10</span>
+      </div>
+      <div class="class-name">FeeInvoice</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>invoiceNumber: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>enrolmentId: <span class="type">String {unique}</span></div>
+      <div class="member"><span class="vis">-</span>totalTuitionBilled: <span class="type">Decimal</span></div>
+      <div class="member"><span class="vis">-</span>totalAmountPaid: <span class="type">Decimal</span></div>
+      <div class="member"><span class="vis">-</span>outstandingBalance: <span class="type">Decimal</span></div>
+      <div class="member"><span class="vis">-</span>paymentDueDate: <span class="type">Date</span></div>
+      <div class="member"><span class="vis">-</span>billingStatus: <span class="type">BillingStatus</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">generateItemizedInvoice</span>(): <span class="type">FeeInvoice</span> <span class="op-req">[FR-05]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">recalculateLedgerBalance</span>(): <span class="type">Decimal</span> <span class="op-req">[FR-05]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">applyPaymentTransaction</span>(pmt: <span class="type">Payment</span>): <span class="type">void</span> <span class="op-req">[FR-05]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">isOverdue</span>(currentDate: <span class="type">Date</span>): <span class="type">Boolean</span> <span class="op-req">[FR-06]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 15: Payment -->
+  <div class="uml-class" style="left: 1450px; top: 1135px; width: 410px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;weak entity&gt;&gt;</span>
+        <span class="fr-tag">FR-05, FR-06</span>
+      </div>
+      <div class="class-name">Payment</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>paymentId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>invoiceNumber: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>amountPaid: <span class="type">Decimal</span></div>
+      <div class="member"><span class="vis">-</span>paymentTimestamp: <span class="type">DateTime</span></div>
+      <div class="member"><span class="vis">-</span>paymentChannel: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>gatewayReferenceCode: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>receiptNumber: <span class="type">String {unique}</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">processPaymentTransaction</span>(): <span class="type">Boolean</span> <span class="op-req">[FR-05]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">syncWithStudentLedger</span>(): <span class="type">Boolean</span> <span class="op-req">[FR-05]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">generateDigitalReceiptPDF</span>(): <span class="type">ByteArray</span> <span class="op-req">[FR-06]</span></div>
+    </div>
+  </div>
+
+  <!-- Class 16: PaymentReminder -->
+  <div class="uml-class service-class" style="left: 1920px; top: 1135px; width: 410px; height: 270px;">
+    <div class="class-header">
+      <div class="header-top-row">
+        <span class="stereotype">&lt;&lt;service / entity&gt;&gt;</span>
+        <span class="fr-tag">FR-06</span>
+      </div>
+      <div class="class-name">PaymentReminder</div>
+    </div>
+    <div class="compartment attributes">
+      <div class="member"><span class="pk">PK</span><span class="vis">-</span>reminderId: <span class="type">String</span></div>
+      <div class="member"><span class="fk">FK</span><span class="vis">-</span>invoiceNumber: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>scheduledTriggerDate: <span class="type">Date</span></div>
+      <div class="member"><span class="vis">-</span>reminderStage: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>notificationChannel: <span class="type">String</span></div>
+      <div class="member"><span class="vis">-</span>deliveryConfirmed: <span class="type">Boolean</span></div>
+    </div>
+    <div class="compartment operations">
+      <div class="member"><span class="vis">+</span><span class="op-name">scheduleAutomatedReminders</span>(inv: <span class="type">FeeInvoice</span>): <span class="type">void</span> <span class="op-req">[FR-06]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">sendUpcomingDueNotice</span>(daysPrior: <span class="type">Integer</span>): <span class="type">Boolean</span> <span class="op-req">[FR-06]</span></div>
+      <div class="member"><span class="vis">+</span><span class="op-name">dispatchOverdueEscalationAlert</span>(): <span class="type">Boolean</span> <span class="op-req">[FR-06]</span></div>
+    </div>
+  </div>
+
+  <!-- ================= ROW 5: ENUMERATIONS & TRACEABILITY FOOTER ================= -->
+
+  <div class="uml-class enum-class" style="left: 70px; top: 1455px; width: 290px; height: 190px;">
+    <div class="class-header">
+      <div class="stereotype">&lt;&lt;enumeration&gt;&gt;</div>
+      <div class="class-name" style="font-size: 13.5px;">UserRole</div>
+    </div>
+    <div class="compartment operations" style="font-size: 11px;">
+      <div>STUDENT</div>
+      <div>INSTRUCTOR</div>
+      <div>ADMINISTRATOR</div>
+      <div>FINANCE_OFFICER</div>
+      <div>COLLEGE_MANAGEMENT</div>
+    </div>
+  </div>
+
+  <div class="uml-class enum-class" style="left: 380px; top: 1455px; width: 310px; height: 190px;">
+    <div class="class-header">
+      <div class="stereotype">&lt;&lt;enumeration&gt;&gt;</div>
+      <div class="class-name" style="font-size: 13.5px;">DepartmentType</div>
+    </div>
+    <div class="compartment operations" style="font-size: 11px;">
+      <div>BUSINESS_ADMINISTRATION</div>
+      <div>INFORMATION_TECHNOLOGY</div>
+      <div>HOSPITALITY_MANAGEMENT</div>
+      <div>FOUNDATIONAL_SUPPORT</div>
+    </div>
+  </div>
+
+  <div class="uml-class enum-class" style="left: 710px; top: 1455px; width: 290px; height: 190px;">
+    <div class="class-header">
+      <div class="stereotype">&lt;&lt;enumeration&gt;&gt;</div>
+      <div class="class-name" style="font-size: 13.5px;">EnrolmentStatus</div>
+    </div>
+    <div class="compartment operations" style="font-size: 11px;">
+      <div>PENDING_VERIFICATION</div>
+      <div>ACTIVE_ENROLLED</div>
+      <div>COMPLETED_GRADUATED</div>
+      <div>DEFERRED_OR_WITHDRAWN</div>
+    </div>
+  </div>
+
+  <div class="uml-class enum-class" style="left: 1020px; top: 1455px; width: 290px; height: 190px;">
+    <div class="class-header">
+      <div class="stereotype">&lt;&lt;enumeration&gt;&gt;</div>
+      <div class="class-name" style="font-size: 13.5px;">BillingStatus</div>
+    </div>
+    <div class="compartment operations" style="font-size: 11px;">
+      <div>UNPAID_ISSUED</div>
+      <div>PARTIALLY_PAID</div>
+      <div>PAID_IN_FULL</div>
+      <div>OVERDUE_ARREARS</div>
+    </div>
+  </div>
+
+  <!-- Complete Requirement Traceability Summary Table in Diagram Footer -->
+  <div class="legend-box" style="left: 1330px; top: 1455px; width: 1000px; height: 190px; border-color: #0f766e;">
+    <div class="legend-header" style="background: #0f766e; padding: 5px 14px; font-size: 12px;">
+      COMPLETE QUESTION 1 TO QUESTION 2 REQUIREMENT TRACEABILITY MATRIX (FR-01 TO FR-10)
+    </div>
+    <div class="legend-content" style="padding: 6px 12px; font-size: 10.3px; line-height: 1.32; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px;">
+      <div><strong>[FR-01] Online Profile &amp; Duplicate Check:</strong> <code>Student.registerOnlineProfile()</code>, <code>StudentRecord.checkDuplicateIdentity()</code></div>
+      <div><strong>[FR-06] Automated Payment Reminders:</strong> <code>PaymentReminder.scheduleAutomatedReminders()</code>, <code>Payment.generateDigitalReceiptPDF()</code></div>
+      <div><strong>[FR-02] Online Course Enrolment:</strong> <code>Course.checkAvailableSeats()</code>, <code>Course.verifyPrerequisites()</code>, <code>Enrolment.submitCourseEnrolment()</code></div>
+      <div><strong>[FR-07] Centralized Announcements Hub:</strong> <code>Announcement.publishNotice()</code>, <code>Announcement.dispatchPushAndEmail()</code></div>
+      <div><strong>[FR-03] Centralized Digital Student Record:</strong> <code>StudentRecord.retrieveRecordByQuery()</code>, <code>StudentRecord.recordSupportRequirement()</code></div>
+      <div><strong>[FR-08] Course Materials &amp; Timetables:</strong> <code>CourseMaterial.publishMaterial()</code>, <code>ScheduleSlot.assignVenueAndTime()</code></div>
+      <div><strong>[FR-04] Digital Transcripts &amp; QR Certificates:</strong> <code>Transcript.generateTamperEvidentPDF()</code>, <code>Transcript.verifyEmployerHashOnline()</code></div>
+      <div><strong>[FR-09] Instructor Grading &amp; Workload:</strong> <code>Instructor.captureAssessmentMark()</code>, <code>Instructor.calculateWorkloadUtilization()</code></div>
+      <div><strong>[FR-05] Integrated Tuition Billing &amp; Ledger:</strong> <code>FeeInvoice.generateItemizedInvoice()</code>, <code>Payment.syncWithStudentLedger()</code></div>
+      <div><strong>[FR-10] Management Analytics &amp; Forecasting:</strong> <code>AnalyticsReport.compileEnrolmentTrends()</code>, <code>AnalyticsReport.forecastFutureEnrolment()</code></div>
+    </div>
+  </div>
+
+</body>
+</html>

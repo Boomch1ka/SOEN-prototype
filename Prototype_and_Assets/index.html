@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horizon Private Training College — Integrated Student Information System (Horizon SIS)</title>
+<style>
+  :root {
+    --navy-950: #0a1128;
+    --navy-900: #0f172a;
+    --navy-800: #1e293b;
+    --blue-700: #1d4ed8;
+    --blue-600: #2563eb;
+    --blue-500: #3b82f6;
+    --blue-50: #eff6ff;
+    --teal-700: #0f766e;
+    --teal-600: #0d9488;
+    --teal-50: #f0fdfa;
+    --emerald-700: #047857;
+    --emerald-600: #059669;
+    --emerald-50: #ecfdf5;
+    --amber-700: #b45309;
+    --amber-600: #d97706;
+    --amber-50: #fffbeb;
+    --rose-700: #be123c;
+    --rose-50: #fff1f2;
+    --purple-700: #6d28d9;
+    --purple-50: #f5f3ff;
+    --slate-900: #0f172a;
+    --slate-700: #334155;
+    --slate-600: #475569;
+    --slate-500: #64748b;
+    --slate-200: #e2e8f0;
+    --slate-100: #f1f5f9;
+    --slate-50: #f8fafc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1600px;
+    height: 1000px;
+    background: #f1f5f9;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: var(--slate-900);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Top Application Shell Bar */
+  .topbar {
+    height: 64px;
+    background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    border-bottom: 2px solid #2563eb;
+    flex-shrink: 0;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 19px;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+  }
+  .brand-title {
+    font-size: 14.5px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .brand-sub {
+    font-size: 10.5px;
+    color: #93c5fd;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-tab {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #cbd5e1;
+    padding: 7px 11px;
+    border-radius: 7px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .nav-tab.active {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  .nav-tab .tab-req {
+    font-size: 10.5px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(59, 130, 246, 0.25);
+    color: #bfdbfe;
+    font-weight: 700;
+  }
+  .nav-tab.active .tab-req {
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  .user-status {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .role-pill {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(52, 211, 153, 0.45);
+    color: #a7f3d0;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .avatar-chip {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 12px 5px 6px;
+    border-radius: 24px;
+    font-size: 12px;
+  }
+  .avatar-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* Sub-header Context Strip */
+  .context-strip {
+    height: 44px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--slate-200);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .context-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .screen-badge {
+    background: #1e3a8a;
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 5px;
+  }
+  .screen-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--slate-900);
+  }
+  .trace-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .trace-pill {
+    background: #eff6ff;
+    border: 1px solid #93c5fd;
+    color: #1d4ed8;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 5px;
+  }
+  .actor-pill {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #15803d;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 5px;
+  }
+
+  /* Main View Container */
+  .view-container {
+    flex: 1;
+    padding: 16px 24px;
+    display: none;
+    gap: 16px;
+    overflow: hidden;
+  }
+  .view-container.active {
+    display: grid;
+  }
+
+  /* Common Card Styles */
+  .card {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 11px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .req-tag {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .req-tag.teal { background: #ccfbf1; color: #115e59; border-color: #5eead4; }
+  .req-tag.amber { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
+  .req-tag.purple { background: #ede9fe; color: #5b21b6; border-color: #c4b5fd; }
+  .req-tag.emerald { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
+
+  .card-body {
+    padding: 14px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    overflow: hidden;
+  }
+
+  /* Form Controls */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .form-group.full {
+    grid-column: 1 / -1;
+  }
+  .form-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .form-input {
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: #0f172a;
+    background: #ffffff;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .form-input.verified {
+    border-color: #10b981;
+    background: #f0fdf4;
+  }
+
+  .alert-box {
+    padding: 9px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+  }
+  .alert-box.success {
+    background: #ecfdf5;
+    border: 1px solid #6ee7b7;
+    color: #065f46;
+  }
+  .alert-box.info {
+    background: #eff6ff;
+    border: 1px solid #93c5fd;
+    color: #1e40af;
+  }
+  .alert-box.warn {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    color: #92400e;
+  }
+
+  .check-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+  .check-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  .box-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: #2563eb;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .box-icon.unchecked {
+    background: #fff;
+    border: 1.5px solid #94a3b8;
+    color: transparent;
+  }
+
+  .btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-primary { background: #1d4ed8; color: #ffffff; }
+  .btn-teal { background: #0f766e; color: #ffffff; }
+  .btn-emerald { background: #059669; color: #ffffff; }
+  .btn-outline { background: #ffffff; color: #1e293b; border: 1px solid #cbd5e1; }
+
+  /* Tables */
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  table.data-table th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 700;
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1.5px solid #cbd5e1;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  table.data-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #1e293b;
+    vertical-align: middle;
+  }
+  table.data-table tr.selected-row {
+    background: #eff6ff;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .status-green { background: #d1fae5; color: #065f46; }
+  .status-blue { background: #dbeafe; color: #1e40af; }
+  .status-amber { background: #fef3c7; color: #92400e; }
+  .status-red { background: #ffe4e6; color: #9f1239; }
+  .status-purple { background: #ede9fe; color: #5b21b6; }
+
+  /* Progress Bars */
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 4px;
+  }
+
+  /* KPI Row */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .kpi-card {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 11px 14px;
+    border-left: 4px solid #2563eb;
+  }
+  .kpi-card.teal { border-left-color: #0d9488; }
+  .kpi-card.amber { border-left-color: #d97706; }
+  .kpi-card.emerald { border-left-color: #059669; }
+  .kpi-card.purple { border-left-color: #7c3aed; }
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+  }
+  .kpi-val {
+    font-size: 21px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 3px 0;
+  }
+  .kpi-sub {
+    font-size: 11px;
+    color: #059669;
+    font-weight: 600;
+  }
+
+  /* QR Credential Box */
+  .credential-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    color: #ffffff;
+    border-radius: 9px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .qr-grid {
+    width: 78px;
+    height: 78px;
+    background: #fff;
+    padding: 6px;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 1.5px;
+    flex-shrink: 0;
+  }
+  .qr-cell { background: #0f172a; }
+  .qr-cell.w { background: #ffffff; }
+</style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-logo">H</div>
+      <div>
+        <div class="brand-title">HORIZON PRIVATE TRAINING COLLEGE — SIS PORTAL</div>
+        <div class="brand-sub">Integrated Student Information, Enrolment, Billing &amp; Academic Analytics Platform (v2.4)</div>
+      </div>
+    </div>
+
+    <div class="nav-tabs">
+      <div class="nav-tab active" id="tab-1" onclick="switchView(1)">
+        <span>1. Enrolment &amp; Records</span>
+        <span class="tab-req">FR-01,02,04</span>
+      </div>
+      <div class="nav-tab" id="tab-2" onclick="switchView(2)">
+        <span>2. Student Files &amp; Grading</span>
+        <span class="tab-req">FR-03,09</span>
+      </div>
+      <div class="nav-tab" id="tab-3" onclick="switchView(3)">
+        <span>3. Billing &amp; Reminders</span>
+        <span class="tab-req">FR-05,06</span>
+      </div>
+      <div class="nav-tab" id="tab-4" onclick="switchView(4)">
+        <span>4. Comms &amp; Analytics</span>
+        <span class="tab-req">FR-07,08,10</span>
+      </div>
+    </div>
+
+    <div class="user-status">
+      <div class="role-pill" id="active-role-pill">Active Actor: Student &amp; Applicant</div>
+      <div class="avatar-chip">
+        <div class="avatar-circle" id="active-avatar">TM</div>
+        <div>
+          <div style="font-weight: 700;" id="active-user-name">Thabo Mokoena</div>
+          <div style="font-size: 10.5px; color: #cbd5e1;" id="active-user-id">STU-2026-0142</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context Strip -->
+  <div class="context-strip">
+    <div class="context-left">
+      <span class="screen-badge" id="screen-badge-text">SCREENSHOT 1 OF 4</span>
+      <span class="screen-title" id="screen-title-text">Online Student Registration, Course Enrolment &amp; Verifiable Digital Education Record Portal</span>
+    </div>
+    <div class="trace-strip">
+      <span class="actor-pill" id="actor-pill-text">Primary Users: Prospective / Enrolled Students &amp; Verifying Employers</span>
+      <span class="trace-pill" id="trace-pill-text">Traceability: FR-01, FR-02, FR-04</span>
+    </div>
+  </div>
+
+  <!-- =========================================================================================
+       VIEW 1: ONLINE REGISTRATION, COURSE ENROLMENT & DIGITAL EDUCATION RECORD (FR-01, FR-02, FR-04)
+       ========================================================================================= -->
+  <div class="view-container active" id="view-1" style="grid-template-columns: 450px 590px 490px;">
+
+    <!-- Column 1: Online Registration & Duplicate Check (FR-01) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Online Application &amp; Profile Registration</div>
+        <span class="req-tag">FR-01</span>
+      </div>
+      <div class="card-body">
+        <div class="alert-box success">
+          <div style="font-size: 15px; font-weight: 800;">&#10003;</div>
+          <div>
+            <strong>Duplicate-Free Identity Verification Passed (FR-01):</strong><br/>
+            National ID <code>040815-5182-084</code> validated against central SIS database in 0.12s. No duplicate student record exists.
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">First Name(s)</label>
+            <div class="form-input">Thabo Kenneth</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Surname / Last Name</label>
+            <div class="form-input">Mokoena</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">National / Passport ID</label>
+            <div class="form-input verified"><span>040815-5182-084</span> <span style="color:#059669;font-weight:800;">&#10003; Unique</span></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assigned Student Number</label>
+            <div class="form-input" style="background:#f8fafc;font-weight:700;color:#1d4ed8;">STU-2026-0142</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <div class="form-input">t.mokoena@student.horizon.ac.za</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mobile Number (SMS Alerts)</label>
+            <div class="form-input">+27 82 491 7302</div>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Prior Qualification Record (Education Record Sync)</label>
+            <div class="form-input verified">
+              <span>National Senior Certificate / GCSE Equiv. (IT-101 Completed: 78%)</span>
+              <span class="status-badge status-green">Verified</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2px;">
+          <div class="form-label" style="margin-bottom: 6px;">Learner Support &amp; Eligibility Indicators (Case Study Addition — FR-01 / FR-03)</div>
+          <div class="check-list">
+            <div class="check-item">
+              <div class="check-box"><span class="box-icon">&#10003;</span> Foundational English &amp; Mathematics Support Track</div>
+              <span class="status-badge status-blue">Enrolled Support</span>
+            </div>
+            <div class="check-item">
+              <div class="check-box"><span class="box-icon unchecked"></span> Special Educational Needs &amp; Disabilities (SEND) Exam Extra Time</div>
+              <span style="font-size:11px;color:#64748b;">Not Requested</span>
+            </div>
+            <div class="check-item">
+              <div class="check-box"><span class="box-icon">&#10003;</span> Vocational Financial Aid / Meal &amp; Transport Bursary Qualified</div>
+              <span class="status-badge status-green">Approved</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: auto; display: flex; gap: 8px; padding-top: 8px; border-top: 1px solid #e2e8f0;">
+          <button class="btn btn-primary" style="flex:1;">&#10003; Save &amp; Update Verified Profile</button>
+          <button class="btn btn-outline">Upload ID Scan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2: Online Course Selection & Automated Enrolment (FR-02) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Online Course Catalogue &amp; Real-Time Enrolment</div>
+        <span class="req-tag teal">FR-02</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <div style="display:flex; gap:6px;">
+            <span class="status-badge status-blue" style="padding:4px 10px;">All Faculties (6)</span>
+            <span class="status-badge" style="background:#f1f5f9;color:#334155;padding:4px 10px;">Information Technology</span>
+            <span class="status-badge" style="background:#f1f5f9;color:#334155;padding:4px 10px;">Business Admin</span>
+            <span class="status-badge" style="background:#f1f5f9;color:#334155;padding:4px 10px;">Hospitality</span>
+          </div>
+          <span style="font-size:11.5px;font-weight:700;color:#0f766e;">2026 Semester 2 Intake Open</span>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Code &amp; Course Title</th>
+              <th>Faculty</th>
+              <th>Prerequisite Check</th>
+              <th>Live Seats</th>
+              <th>Tuition Fee</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="selected-row">
+              <td>
+                <div style="font-weight:700;color:#1d4ed8;">IT-204: Full-Stack Web &amp; Database Systems</div>
+                <div style="font-size:11px;color:#64748b;">16 Weeks &bull; NQF Level 5 Certificate</div>
+              </td>
+              <td><span class="status-badge status-blue">IT</span></td>
+              <td><span style="color:#059669;font-weight:700;">&#10003; IT-101 Passed (78%)</span></td>
+              <td>
+                <div style="font-weight:700;font-size:11px;">24 / 30 Filled</div>
+                <div class="progress-track" style="margin-top:3px;"><div class="progress-fill" style="width:80%;"></div></div>
+              </td>
+              <td style="font-weight:700;">R 12,500</td>
+              <td><span class="status-badge status-green">&#10003; Enrolled</span></td>
+            </tr>
+            <tr class="selected-row">
+              <td>
+                <div style="font-weight:700;color:#1d4ed8;">BA-108: Business Operations &amp; Project Mgmt</div>
+                <div style="font-size:11px;color:#64748b;">12 Weeks &bull; Short Vocational Program</div>
+              </td>
+              <td><span class="status-badge status-purple">Business</span></td>
+              <td><span style="color:#059669;font-weight:700;">&#10003; Open Entry Met</span></td>
+              <td>
+                <div style="font-weight:700;font-size:11px;">19 / 35 Filled</div>
+                <div class="progress-track" style="margin-top:3px;"><div class="progress-fill" style="width:54%;background:#0d9488;"></div></div>
+              </td>
+              <td style="font-weight:700;">R 6,000</td>
+              <td><span class="status-badge status-green">&#10003; Enrolled</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">HM-112: Hospitality &amp; Event Operations</div>
+                <div style="font-size:11px;color:#64748b;">12 Weeks &bull; Practical Certification</div>
+              </td>
+              <td><span class="status-badge status-amber">Hospitality</span></td>
+              <td><span style="color:#059669;font-weight:700;">&#10003; Open Entry Met</span></td>
+              <td>
+                <div style="font-weight:700;font-size:11px;">22 / 25 Filled</div>
+                <div class="progress-track" style="margin-top:3px;"><div class="progress-fill" style="width:88%;background:#d97706;"></div></div>
+              </td>
+              <td style="font-weight:700;">R 7,800</td>
+              <td><button class="btn btn-outline" style="padding:4px 9px;font-size:11px;">+ Select</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">IT-302: Cloud Infrastructure &amp; Cybersecurity</div>
+                <div style="font-size:11px;color:#64748b;">16 Weeks &bull; Advanced Certification</div>
+              </td>
+              <td><span class="status-badge status-blue">IT</span></td>
+              <td><span style="color:#be123c;font-weight:700;">&#10007; Requires IT-204</span></td>
+              <td>
+                <div style="font-weight:700;font-size:11px;">14 / 25 Filled</div>
+                <div class="progress-track" style="margin-top:3px;"><div class="progress-fill" style="width:56%;"></div></div>
+              </td>
+              <td style="font-weight:700;">R 14,200</td>
+              <td><span class="status-badge status-red">Locked</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="alert-box info" style="margin-top: auto;">
+          <div style="font-size:15px;font-weight:800;">&#9432;</div>
+          <div>
+            <strong>Instant Online Enrolment Confirmation (FR-02):</strong><br/>
+            Enrolment Reference <code>ENR-2026-8841</code> confirmed for <strong>IT-204</strong> &amp; <strong>BA-108</strong>. Invoice <code>INV-2026-4402</code> (R 18,500.00) automatically generated in Billing Ledger (FR-05).
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top:8px; border-top:1px solid #e2e8f0;">
+          <div style="font-size:12px;"><strong>Selected Credits:</strong> 48 Credits (2 Modules) &bull; <strong>Total Tuition:</strong> <span style="color:#1d4ed8;font-weight:800;">R 18,500.00</span></div>
+          <button class="btn btn-teal">Download Enrolment Proof (PDF)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3: Digital Education Record & Verifiable E-Certificate (FR-04) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Digital Education Record &amp; E-Certificates</div>
+        <span class="req-tag emerald">FR-04</span>
+      </div>
+      <div class="card-body">
+        <div class="credential-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <div style="font-size:10.5px; color:#93c5fd; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Official Verifiable Digital Credential</div>
+              <div style="font-size:15.5px; font-weight:800; margin-top:2px;">Certificate in IT Foundations (IT-101)</div>
+              <div style="font-size:12px; color:#e2e8f0; margin-top:2px;">Learner: <strong>Thabo Kenneth Mokoena</strong> (STU-2026-0142)</div>
+              <div style="font-size:11.5px; color:#a7f3d0; font-weight:700; margin-top:4px;">Final Mark: 78.0% (Distinction) &bull; Status: Conferred</div>
+            </div>
+            <!-- Simulated QR Code -->
+            <div class="qr-grid" title="Employer Verification QR Code">
+              <div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div>
+              <div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div>
+              <div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div>
+              <div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell w"></div>
+              <div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div>
+              <div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell w"></div>
+              <div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell w"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell"></div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.1); padding:7px 10px; border-radius:6px; font-family:Consolas,monospace; font-size:11px; display:flex; justify-content:space-between;">
+            <span>Hash: <strong>VER-HPTC-2026-9941A</strong></span>
+            <span style="color:#6ee7b7;">&#10003; Tamper-Evident Signed</span>
+          </div>
+        </div>
+
+        <div style="font-size:11.5px; font-weight:700; color:#475569; text-transform:uppercase;">Academic Transcript Summary (All Modules)</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Module</th>
+              <th>Term</th>
+              <th>Mark</th>
+              <th>Credential Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>IT-101</strong> Intro to Software &amp; Networks</td>
+              <td>2026 S1</td>
+              <td style="font-weight:700;color:#059669;">78.0%</td>
+              <td><span class="status-badge status-green">QR Cert Issued</span></td>
+            </tr>
+            <tr>
+              <td><strong>BA-101</strong> Business Communication</td>
+              <td>2026 S1</td>
+              <td style="font-weight:700;color:#059669;">84.5%</td>
+              <td><span class="status-badge status-green">QR Cert Issued</span></td>
+            </tr>
+            <tr>
+              <td><strong>IT-204</strong> Full-Stack Web &amp; DB Systems</td>
+              <td>2026 S2</td>
+              <td style="font-weight:700;color:#1d4ed8;">81.2% (CA)</td>
+              <td><span class="status-badge status-blue">In Progress</span></td>
+            </tr>
+            <tr>
+              <td><strong>BA-108</strong> Business Ops &amp; Project Mgmt</td>
+              <td>2026 S2</td>
+              <td style="font-weight:700;color:#1d4ed8;">76.0% (CA)</td>
+              <td><span class="status-badge status-blue">In Progress</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="alert-box success" style="margin-top:auto;">
+          <div style="font-size:14px;font-weight:800;">&#128274;</div>
+          <div>
+            <strong>Employer Instant Verification Portal (FR-04):</strong><br/>
+            Employers can scan the QR code or verify <code>horizon.ac.za/verify/VER-HPTC-2026-9941A</code> to confirm authentic results without paper certificates.
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px; padding-top:8px; border-top:1px solid #e2e8f0;">
+          <button class="btn btn-emerald" style="flex:1;">&#128196; Download Official PDF Transcript</button>
+          <button class="btn btn-outline">Share Employer Link</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =========================================================================================
+       VIEW 2: CENTRALIZED STUDENT RECORD, GRADING & WORKLOAD CONSOLE (FR-03, FR-09)
+       ========================================================================================= -->
+  <div class="view-container" id="view-2" style="grid-template-columns: 540px 520px 470px;">
+
+    <!-- Column 1: Centralized Searchable Student Record Directory (FR-03) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Centralized Digital Student Records Directory</div>
+        <span class="req-tag">FR-03</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex; gap:8px;">
+          <div class="form-input" style="flex:1; background:#f8fafc; border-color:#3b82f6;">
+            <span>&#128269; Search ID, Name, Cohort, or Support Flag: <strong>"IT-204"</strong></span>
+            <span style="font-size:11px; color:#059669; font-weight:700;">418 Records (0.14s)</span>
+          </div>
+          <button class="btn btn-primary">Filter</button>
+        </div>
+
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <span class="status-badge status-blue">All Active (418)</span>
+          <span class="status-badge status-amber">SEN / Disability Support (29)</span>
+          <span class="status-badge status-purple">English/Maths Track (44)</span>
+          <span class="status-badge status-red">At-Risk Alert (12)</span>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Student ID &amp; Name</th>
+              <th>Program</th>
+              <th>GPA / Avg</th>
+              <th>Support Flags</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="selected-row">
+              <td>
+                <div style="font-weight:700;color:#1d4ed8;">STU-2026-0142 &bull; Thabo Mokoena</div>
+                <div style="font-size:10.5px;color:#64748b;">ID: 040815-5182-084 &bull; Att: 94.2%</div>
+              </td>
+              <td>IT-204 / BA-108</td>
+              <td style="font-weight:700;color:#059669;">79.9%</td>
+              <td><span class="status-badge status-blue">Maths/Eng</span> <span class="status-badge status-green">Bursary</span></td>
+              <td><span class="status-badge status-green">Good Standing</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">STU-2026-0189 &bull; Lerato Dlamini</div>
+                <div style="font-size:10.5px;color:#64748b;">ID: 050211-0294-081 &bull; Att: 97.5%</div>
+              </td>
+              <td>IT-204</td>
+              <td style="font-weight:700;color:#059669;">86.4%</td>
+              <td><span class="status-badge status-amber">SEND Extra Time</span></td>
+              <td><span class="status-badge status-green">Distinction</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">STU-2026-0204 &bull; Keenan Naidoo</div>
+                <div style="font-size:10.5px;color:#64748b;">ID: 031129-5091-087 &bull; Att: 68.0%</div>
+              </td>
+              <td>IT-204</td>
+              <td style="font-weight:700;color:#be123c;">46.5%</td>
+              <td><span class="status-badge status-red">At-Risk Intervention</span></td>
+              <td><span class="status-badge status-red">Academic Warning</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">STU-2026-0231 &bull; Zanele Khumalo</div>
+                <div style="font-size:10.5px;color:#64748b;">ID: 040619-0412-083 &bull; Att: 91.0%</div>
+              </td>
+              <td>HM-112</td>
+              <td style="font-weight:700;color:#059669;">74.2%</td>
+              <td><span class="status-badge status-green">Bursary</span></td>
+              <td><span class="status-badge status-green">Good Standing</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">STU-2026-0267 &bull; Sipho Ndlovu</div>
+                <div style="font-size:10.5px;color:#64748b;">ID: 020904-5318-089 &bull; Att: 88.5%</div>
+              </td>
+              <td>BA-108</td>
+              <td style="font-weight:700;color:#1d4ed8;">67.8%</td>
+              <td><span class="status-badge status-purple">Eng Support</span></td>
+              <td><span class="status-badge status-blue">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="alert-box info" style="margin-top:auto;">
+          <div>
+            <strong>Paperless Record Retrieval (FR-03):</strong> All personal demographics, assessment marks, and support flags are indexed centrally, eliminating misplaced paper files and manual spreadsheet lookups.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2: Selected Learner Digital File & Assessment Grade Capture (FR-03, FR-09) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Student Master Record &amp; Instructor Grade Capture</div>
+        <span class="req-tag teal">FR-03, FR-09</span>
+      </div>
+      <div class="card-body">
+        <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:14px; font-weight:800; color:#0f172a;">Thabo Kenneth Mokoena (STU-2026-0142)</div>
+            <div style="font-size:11.5px; color:#475569;">Cohort: 2026-S2 Information Technology &bull; Attendance: <strong>94.2%</strong></div>
+          </div>
+          <span class="status-badge status-green"> Cumulative GPA: 79.9%</span>
+        </div>
+
+        <div style="font-size:11.5px; font-weight:700; color:#475569; text-transform:uppercase;">Module IT-204: Assessment Marks Entry &amp; Weighting (FR-09)</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Assessment Component</th>
+              <th>Weight</th>
+              <th>Score (%)</th>
+              <th>Weighted</th>
+              <th>Graded By</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Test 1:</strong> Relational DB Design</td>
+              <td>20%</td>
+              <td><div class="form-input" style="height:26px;width:70px;font-weight:700;">82.0%</div></td>
+              <td style="font-weight:700;">16.40%</td>
+              <td>STF-104</td>
+            </tr>
+            <tr>
+              <td><strong>Practical:</strong> REST API Prototype</td>
+              <td>30%</td>
+              <td><div class="form-input" style="height:26px;width:70px;font-weight:700;">85.0%</div></td>
+              <td style="font-weight:700;">25.50%</td>
+              <td>STF-104</td>
+            </tr>
+            <tr>
+              <td><strong>Final Exam:</strong> Full-Stack Capstone</td>
+              <td>50%</td>
+              <td><div class="form-input verified" style="height:26px;width:70px;font-weight:700;">78.6%</div></td>
+              <td style="font-weight:700;">39.30%</td>
+              <td>STF-104</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background:#eff6ff; border:1px solid #93c5fd; border-radius:7px; padding:9px 12px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px; font-weight:700; color:#1e3a8a;">Calculated Final Module Mark (IT-204):</span>
+          <span style="font-size:16px; font-weight:800; color:#1d4ed8;">81.20% (Distinction Pass)</span>
+        </div>
+
+        <div class="form-group full">
+          <label class="form-label">Academic Support &amp; Instructor Intervention Note (FR-03 / FR-09)</label>
+          <div class="form-input" style="height:48px; align-items:flex-start; padding:6px 10px; font-size:11.5px; line-height:1.35;">
+            Learner attends weekly Foundational Technical English workshop; strong practical database modeling performance. Recommended for peer-tutoring role.
+          </div>
+        </div>
+
+        <div style="margin-top:auto; display:flex; gap:8px; padding-top:8px; border-top:1px solid #e2e8f0;">
+          <button class="btn btn-primary" style="flex:1;">&#10003; Commit Grades to Student Record</button>
+          <button class="btn btn-outline" style="color:#be123c; border-color:#fda4af;">&#9873; Flag At-Risk</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3: Instructor Workload & Cohort Allocation Monitor (FR-09) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Instructor Workload &amp; Cohort Allocation</div>
+        <span class="req-tag purple">FR-09</span>
+      </div>
+      <div class="card-body">
+        <div style="background:#f5f3ff; border:1px solid #c4b5fd; border-radius:8px; padding:10px 12px;">
+          <div style="font-size:13.5px; font-weight:800; color:#4c1d95;">Dr. N. Patel (Staff ID: STF-104)</div>
+          <div style="font-size:11.5px; color:#5b21b6;">Senior Lecturer — Information Technology Department</div>
+          <div style="margin-top:8px; display:flex; justify-content:space-between; font-size:11.5px; font-weight:700;">
+            <span>Allocated Weekly Teaching Load:</span>
+            <span style="color:#6d28d9;">22 / 25 Max Hours (88% Capacity)</span>
+          </div>
+          <div class="progress-track" style="margin-top:5px; height:10px;">
+            <div class="progress-fill" style="width:88%; background:linear-gradient(90deg, #6d28d9, #2563eb);"></div>
+          </div>
+        </div>
+
+        <div style="font-size:11.5px; font-weight:700; color:#475569; text-transform:uppercase;">Assigned Course Cohorts &amp; Grading Progress</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Cohort / Module</th>
+              <th>Students</th>
+              <th>Weekly Hrs</th>
+              <th>Grading Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>IT-204 (Group A)</strong> Web &amp; DB</td>
+              <td>24</td>
+              <td>8 hrs</td>
+              <td><span class="status-badge status-green">24 / 24 Graded</span></td>
+            </tr>
+            <tr>
+              <td><strong>IT-101 (Group B)</strong> IT Foundations</td>
+              <td>30</td>
+              <td>8 hrs</td>
+              <td><span class="status-badge status-green">30 / 30 Graded</span></td>
+            </tr>
+            <tr>
+              <td><strong>IT-302 (Group A)</strong> Cloud Security</td>
+              <td>14</td>
+              <td>6 hrs</td>
+              <td><span class="status-badge status-amber">11 / 14 Graded</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="font-size:11.5px; font-weight:700; color:#475569; text-transform:uppercase;">Departmental Instructor Workload Summary (IT Faculty)</div>
+        <div class="check-list">
+          <div class="check-item">
+            <span><strong>Dr. N. Patel (STF-104)</strong> &bull; 3 Cohorts (68 Students)</span>
+            <span class="status-badge status-green">22 / 25 hrs (Optimal)</span>
+          </div>
+          <div class="check-item">
+            <span><strong>Mr. K. van Wyk (STF-109)</strong> &bull; 3 Cohorts (75 Students)</span>
+            <span class="status-badge status-amber">24 / 25 hrs (Near Cap)</span>
+          </div>
+          <div class="check-item">
+            <span><strong>Ms. A. Sithole (STF-112)</strong> &bull; 2 Cohorts (48 Students)</span>
+            <span class="status-badge status-blue">16 / 25 hrs (Available)</span>
+          </div>
+        </div>
+
+        <div style="margin-top:auto; display:flex; gap:8px; padding-top:8px; border-top:1px solid #e2e8f0;">
+          <button class="btn btn-teal" style="flex:1;">Log Weekly Teaching &amp; Lab Hours</button>
+          <button class="btn btn-outline">Export Sheet</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =========================================================================================
+       VIEW 3: INTEGRATED TUITION BILLING, FEE LEDGER & AUTOMATED REMINDERS (FR-05, FR-06)
+       ========================================================================================= -->
+  <div class="view-container" id="view-3" style="grid-template-rows: 86px 1fr; grid-template-columns: 1fr;">
+
+    <!-- Top Financial KPI Row -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Tuition Billed (2026)</div>
+        <div class="kpi-val">R 18,500.00</div>
+        <div class="kpi-sub">Invoice #INV-2026-4402 (IT-204 &amp; BA-108)</div>
+      </div>
+      <div class="kpi-card emerald">
+        <div class="kpi-label">Total Paid &amp; Reconciled</div>
+        <div class="kpi-val" style="color:#059669;">R 12,500.00</div>
+        <div class="kpi-sub">&#10003; Auto-Synced with Student Record (FR-05)</div>
+      </div>
+      <div class="kpi-card amber">
+        <div class="kpi-label">Outstanding Fee Balance</div>
+        <div class="kpi-val" style="color:#d97706;">R 6,000.00</div>
+        <div class="kpi-sub">Due Date: 25 Nov 2026 (16 Days Remaining)</div>
+      </div>
+      <div class="kpi-card purple">
+        <div class="kpi-label">Automated Reminder Engine</div>
+        <div class="kpi-val" style="color:#6d28d9;">Active (3 Rules)</div>
+        <div class="kpi-sub">&#10003; Next Auto-Alert: 11 Nov 2026 (14-Day Notice)</div>
+      </div>
+    </div>
+
+    <!-- Bottom 2-Column Split -->
+    <div style="display:grid; grid-template-columns: 940px 596px; gap:16px; overflow:hidden;">
+
+      <!-- Left: Integrated Fee Ledger, Invoices & Online Payment / Receipt Issuance (FR-05, FR-06) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Integrated Student Fee Ledger, Real-Time Reconciliation &amp; Online Payment</div>
+          <span class="req-tag">FR-05, FR-06</span>
+        </div>
+        <div class="card-body">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Reference / Invoice</th>
+                <th>Transaction Description</th>
+                <th>Debit (Billed)</th>
+                <th>Credit (Paid)</th>
+                <th>Running Balance</th>
+                <th>Digital Receipt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>15 Jul 2026</td>
+                <td><code>INV-2026-4402</code></td>
+                <td><strong>IT-204</strong> Full-Stack Web &amp; DB Systems Tuition</td>
+                <td>R 12,500.00</td>
+                <td>—</td>
+                <td>R 12,500.00</td>
+                <td><span class="status-badge status-blue">Invoice PDF</span></td>
+              </tr>
+              <tr>
+                <td>15 Jul 2026</td>
+                <td><code>INV-2026-4402</code></td>
+                <td><strong>BA-108</strong> Business Ops &amp; Project Mgmt Tuition</td>
+                <td>R 6,000.00</td>
+                <td>—</td>
+                <td>R 18,500.00</td>
+                <td><span class="status-badge status-blue">Invoice PDF</span></td>
+              </tr>
+              <tr>
+                <td>18 Jul 2026</td>
+                <td><code>PAY-2026-9012</code></td>
+                <td>Online Card Payment (Deposit &amp; Registration)</td>
+                <td>—</td>
+                <td style="color:#059669;font-weight:700;">R 6,500.00</td>
+                <td>R 12,000.00</td>
+                <td><span class="status-badge status-green">&#128196; RCP-5501</span></td>
+              </tr>
+              <tr class="selected-row">
+                <td>02 Oct 2026</td>
+                <td><code>PAY-2026-9844</code></td>
+                <td>Instant EFT Payment (Instalment 2 — Auto-Reconciled)</td>
+                <td>—</td>
+                <td style="color:#059669;font-weight:700;">R 6,000.00</td>
+                <td style="font-weight:800;color:#d97706;">R 6,000.00</td>
+                <td><span class="status-badge status-green">&#128196; RCP-5519</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Online Payment Sub-Panel -->
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px 14px; margin-top:4px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:12.5px; font-weight:800; color:#0f172a;">Make Online Tuition Payment / Instant Ledger Settlement (FR-05)</span>
+              <span class="status-badge status-green">&#128274; PCI-DSS Gateway Integrated</span>
+            </div>
+            <div style="display:grid; grid-template-columns: 180px 210px 220px 1fr; gap:10px; align-items:end;">
+              <div class="form-group">
+                <label class="form-label">Amount to Pay (ZAR)</label>
+                <div class="form-input verified" style="font-weight:800;">R 6,000.00</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Payment Method</label>
+                <div class="form-input">Instant EFT / Bank Card &#9662;</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Target Invoice</label>
+                <div class="form-input">INV-2026-4402 (Final Bal)</div>
+              </div>
+              <button class="btn btn-emerald" style="height:32px;">&#10003; Pay Now &amp; Issue Digital Receipt</button>
+            </div>
+          </div>
+
+          <div class="alert-box success" style="margin-top:auto;">
+            <div>
+              <strong>Elimination of Standalone Accounting Reconciliation (FR-05):</strong> Every payment immediately updates the student's academic clearance status and issues a verifiable PDF receipt, removing the need for students to visit the administration office to confirm payments.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Automated Fee Payment Reminders & Escalation Log (FR-06) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Automated Payment Reminders &amp; Dispatch Log</div>
+          <span class="req-tag purple">FR-06</span>
+        </div>
+        <div class="card-body">
+          <div style="font-size:11.5px; font-weight:700; color:#475569; text-transform:uppercase;">Configured Automated Reminder Schedule Rules</div>
+          <div class="check-list">
+            <div class="check-item">
+              <div class="check-box"><span class="box-icon">&#10003;</span> <strong>Stage 1 (14 Days Prior):</strong> Friendly Email + In-App Balance Notice</div>
+              <span class="status-badge status-green">Enabled</span>
+            </div>
+            <div class="check-item">
+              <div class="check-box"><span class="box-icon">&#10003;</span> <strong>Stage 2 (7 Days Prior):</strong> SMS + Email Instalment Due Reminder</div>
+              <span class="status-badge status-green">Enabled</span>
+            </div>
+            <div class="check-item">
+              <div class="check-box"><span class="box-icon">&#10003;</span> <strong>Stage 3 (1 Day Prior &amp; Overdue):</strong> Urgent Alert + Finance Follow-Up</div>
+              <span class="status-badge status-green">Enabled</span>
+            </div>
+          </div>
+
+          <div style="font-size:11.5px; font-weight:700; color:#475569; text-transform:uppercase; margin-top:4px;">Automated Reminder Dispatch Audit Trail</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Trigger Date</th>
+                <th>Student / Invoice</th>
+                <th>Stage &amp; Channel</th>
+                <th>Delivery Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>25 Sep 2026</td>
+                <td>STU-0142 (INV-4402)</td>
+                <td>7-Day Prior (Email + SMS)</td>
+                <td><span class="status-badge status-green">&#10003; Delivered (Paid 02 Oct)</span></td>
+              </tr>
+              <tr>
+                <td>08 Nov 2026</td>
+                <td>STU-0204 (INV-4489)</td>
+                <td>Overdue Notice (SMS + Push)</td>
+                <td><span class="status-badge status-amber">&#9888; Escalated to Finance</span></td>
+              </tr>
+              <tr class="selected-row">
+                <td>11 Nov 2026</td>
+                <td>STU-0142 (INV-4402)</td>
+                <td>14-Day Prior (Email + App)</td>
+                <td><span class="status-badge status-blue">&#128337; Scheduled Auto-Run</span></td>
+              </tr>
+              <tr>
+                <td>18 Nov 2026</td>
+                <td>STU-0142 (INV-4402)</td>
+                <td>7-Day Prior (SMS + Email)</td>
+                <td><span class="status-badge status-blue">&#128337; Scheduled Auto-Run</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top:auto; display:flex; gap:8px; padding-top:8px; border-top:1px solid #e2e8f0;">
+            <button class="btn btn-primary" style="flex:1;">Run Batch Overdue Reminder Job Now</button>
+            <button class="btn btn-outline">Configure Templates</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================================
+       VIEW 4: ACADEMIC COMMUNICATION HUB, COURSE MATERIALS & EXECUTIVE ANALYTICS (FR-07, FR-08, FR-10)
+       ========================================================================================= -->
+  <div class="view-container" id="view-4" style="grid-template-columns: 730px 806px;">
+
+    <!-- Left Column: Centralized Announcements, Timetable & Course Materials Hub (FR-07, FR-08) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Centralized Academic Announcements, Timetable &amp; Materials Hub</div>
+        <span class="req-tag">FR-07, FR-08</span>
+      </div>
+      <div class="card-body">
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11.5px; font-weight:700; color:#475569; text-transform:uppercase;">Live Cohort Announcements &amp; Schedule Notices (FR-07)</span>
+          <button class="btn btn-primary" style="padding:4px 10px; font-size:11px;">+ Publish New Notice</button>
+        </div>
+
+        <div class="check-list">
+          <div class="check-item" style="border-left:4px solid #2563eb; align-items:flex-start; flex-direction:column; gap:4px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+              <strong style="color:#1e3a8a;">[IT-204 Exam Notice] Practical Database Lab Venue Moved to Lab B2</strong>
+              <span class="status-badge status-green">Read Receipts: 23 / 24 (96%)</span>
+            </div>
+            <div style="font-size:11.5px; color:#475569;">Published by Dr. N. Patel &bull; 09 Nov 2026 08:15 AM &bull; Dispatched via In-App Push &amp; Email</div>
+          </div>
+          <div class="check-item" style="border-left:4px solid #0d9488; align-items:flex-start; flex-direction:column; gap:4px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+              <strong style="color:#0f766e;">[All Students] 2026 Summer Graduation &amp; Digital E-Certificate Rollout</strong>
+              <span class="status-badge status-blue">Read Receipts: 398 / 418 (95%)</span>
+            </div>
+            <div style="font-size:11.5px; color:#475569;">Published by Academic Registrar &bull; 07 Nov 2026 11:00 AM &bull; All Faculties</div>
+          </div>
+        </div>
+
+        <div style="font-size:11.5px; font-weight:700; color:#475569; text-transform:uppercase; margin-top:2px;">Personalized Weekly Class Timetable &amp; Digital Course Materials (FR-08)</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Day &amp; Time</th>
+              <th>Module &amp; Session</th>
+              <th>Venue / Mode</th>
+              <th>Course Material Repository (FR-08)</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:700;">Mon 09:00–11:00</td>
+              <td><strong>IT-204</strong> Lecture: UML &amp; ORM</td>
+              <td>Room A-102</td>
+              <td><code>Week10_UML_Design_Slides.pdf</code> (2.4 MB)</td>
+              <td><span class="status-badge status-blue">&#8681; Download</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;">Tue 13:00–15:00</td>
+              <td><strong>BA-108</strong> Project Scheduling</td>
+              <td>Room C-201</td>
+              <td><code>BA108_CaseStudy_Template.docx</code> (840 KB)</td>
+              <td><span class="status-badge status-blue">&#8681; Download</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;">Wed 10:00–13:00</td>
+              <td><strong>IT-204</strong> Practical SQL Lab</td>
+              <td>Comp Lab B2</td>
+              <td><code>Lab08_PostgreSQL_Scripts.zip</code> (4.1 MB)</td>
+              <td><span class="status-badge status-blue">&#8681; Download</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;">Thu 14:00–15:30</td>
+              <td><strong>ENG-SUP</strong> Technical Academic Writing</td>
+              <td>Support Hub 1</td>
+              <td><code>Academic_Report_Guide.pdf</code> (1.5 MB)</td>
+              <td><span class="status-badge status-blue">&#8681; Download</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="alert-box info" style="margin-top:auto;">
+          <div>
+            <strong>Centralized Academic Access (FR-07, FR-08):</strong> Replaces printed noticeboards and informal chat groups with a single hub for verified schedule updates, read-tracked notices, and downloadable learning materials.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Executive Academic Reporting, Enrolment Trends & Forecasting Dashboard (FR-10) -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Executive Academic Analytics, Program Effectiveness &amp; Enrolment Forecasting</div>
+        <span class="req-tag emerald">FR-10</span>
+      </div>
+      <div class="card-body">
+
+        <!-- Mini Analytics KPIs -->
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;">
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:8px 12px;">
+            <div style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase;">College Pass Rate (2026)</div>
+            <div style="font-size:19px; font-weight:800; color:#059669;">89.4% <span style="font-size:11px;font-weight:600;">(+4.2% YoY)</span></div>
+          </div>
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:8px 12px;">
+            <div style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase;">Active Enrolments</div>
+            <div style="font-size:19px; font-weight:800; color:#1d4ed8;">418 Learners</div>
+          </div>
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:8px 12px;">
+            <div style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase;">2027 S1 Forecasted Intake</div>
+            <div style="font-size:19px; font-weight:800; color:#6d28d9;">485 Projected (+16%)</div>
+          </div>
+        </div>
+
+        <!-- SVG Multi-Bar Enrolment Trend & Forecast Chart -->
+        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:10px 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:12px; font-weight:700; color:#0f172a;">Historical Enrolment Trends &amp; Predictive Intake Forecast by Department (FR-10)</span>
+            <div style="display:flex; gap:12px; font-size:11px; font-weight:600;">
+              <span style="color:#2563eb;">&#9632; Info Tech (IT)</span>
+              <span style="color:#0d9488;">&#9632; Business Admin</span>
+              <span style="color:#d97706;">&#9632; Hospitality</span>
+            </div>
+          </div>
+          <svg width="740" height="155" viewBox="0 0 740 155">
+            <!-- Grid lines -->
+            <line x1="45" y1="15" x2="720" y2="15" stroke="#e2e8f0" stroke-width="1"/>
+            <line x1="45" y1="50" x2="720" y2="50" stroke="#e2e8f0" stroke-width="1"/>
+            <line x1="45" y1="85" x2="720" y2="85" stroke="#e2e8f0" stroke-width="1"/>
+            <line x1="45" y1="125" x2="720" y2="125" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="38" y="20" text-anchor="end" font-size="10" fill="#64748b">220</text>
+            <text x="38" y="54" text-anchor="end" font-size="10" fill="#64748b">150</text>
+            <text x="38" y="89" text-anchor="end" font-size="10" fill="#64748b">80</text>
+            <text x="38" y="125" text-anchor="end" font-size="10" fill="#64748b">0</text>
+
+            <!-- 2025 S1 -->
+            <rect x="75" y="68" width="26" height="57" fill="#2563eb" rx="3"/>
+            <rect x="105" y="76" width="26" height="49" fill="#0d9488" rx="3"/>
+            <rect x="135" y="88" width="26" height="37" fill="#d97706" rx="3"/>
+            <text x="118" y="143" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">2025 S1 (290)</text>
+
+            <!-- 2025 S2 -->
+            <rect x="230" y="56" width="26" height="69" fill="#2563eb" rx="3"/>
+            <rect x="260" y="68" width="26" height="57" fill="#0d9488" rx="3"/>
+            <rect x="290" y="82" width="26" height="43" fill="#d97706" rx="3"/>
+            <text x="273" y="143" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">2025 S2 (338)</text>
+
+            <!-- 2026 S1 -->
+            <rect x="385" y="42" width="26" height="83" fill="#2563eb" rx="3"/>
+            <rect x="415" y="58" width="26" height="67" fill="#0d9488" rx="3"/>
+            <rect x="445" y="75" width="26" height="50" fill="#d97706" rx="3"/>
+            <text x="428" y="143" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">2026 S2 Actual (418)</text>
+
+            <!-- 2027 S1 Forecast Box -->
+            <rect x="525" y="8" width="175" height="140" fill="#f5f3ff" stroke="#c4b5fd" stroke-dasharray="4,3" rx="6"/>
+            <rect x="550" y="24" width="26" height="101" fill="#2563eb" rx="3"/>
+            <rect x="580" y="46" width="26" height="79" fill="#0d9488" rx="3"/>
+            <rect x="610" y="66" width="26" height="59" fill="#d97706" rx="3"/>
+            <text x="612" y="143" text-anchor="middle" font-size="11" font-weight="700" fill="#5b21b6">2027 S1 Forecast (485)</text>
+          </svg>
+        </div>
+
+        <!-- Consolidated Performance & Workload Table -->
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Department / Faculty</th>
+              <th>Enrolled</th>
+              <th>Pass Rate</th>
+              <th>Avg Grade</th>
+              <th>Staff Workload</th>
+              <th>Fee Collection</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Information Technology</strong></td>
+              <td>182</td>
+              <td><span class="status-badge status-green">91.2%</span></td>
+              <td>74.8%</td>
+              <td>84% Utilized</td>
+              <td>94.5% Paid</td>
+            </tr>
+            <tr>
+              <td><strong>Business Administration</strong></td>
+              <td>138</td>
+              <td><span class="status-badge status-green">88.6%</span></td>
+              <td>71.2%</td>
+              <td>79% Utilized</td>
+              <td>92.0% Paid</td>
+            </tr>
+            <tr>
+              <td><strong>Hospitality Management</strong></td>
+              <td>98</td>
+              <td><span class="status-badge status-green">87.8%</span></td>
+              <td>73.1%</td>
+              <td>76% Utilized</td>
+              <td>91.2% Paid</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:8px; border-top:1px solid #e2e8f0;">
+          <span style="font-size:11.5px; color:#475569;"><strong>Strategic Insight:</strong> IT enrolment projected to grow +19%; 1 additional lecturer recommended.</span>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-emerald">&#128202; Export Executive PDF Report</button>
+            <button class="btn btn-outline">Export CSV Dataset</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const viewMeta = {
+      1: {
+        badge: 'SCREENSHOT 1 OF 4',
+        title: 'Online Student Registration, Course Enrolment & Verifiable Digital Education Record Portal',
+        actor: 'Primary Users: Prospective / Enrolled Students & Verifying Employers',
+        trace: 'Traceability: FR-01, FR-02, FR-04',
+        rolePill: 'Active Actor: Student & Applicant',
+        avatar: 'TM',
+        userName: 'Thabo Mokoena',
+        userId: 'STU-2026-0142'
+      },
+      2: {
+        badge: 'SCREENSHOT 2 OF 4',
+        title: 'Centralized Digital Student Record Management, Assessment Grading & Workload Console',
+        actor: 'Primary Users: Academic Instructors & Administrative Staff',
+        trace: 'Traceability: FR-03, FR-09',
+        rolePill: 'Active Actor: Academic Instructor',
+        avatar: 'NP',
+        userName: 'Dr. N. Patel',
+        userId: 'STF-104 (IT Dept)'
+      },
+      3: {
+        badge: 'SCREENSHOT 3 OF 4',
+        title: 'Integrated Tuition Billing, Real-Time Fee Ledger & Automated Payment Reminders Hub',
+        actor: 'Primary Users: Enrolled Students & Finance / Administration Officers',
+        trace: 'Traceability: FR-05, FR-06',
+        rolePill: 'Active Actor: Student & Finance Admin',
+        avatar: 'TM',
+        userName: 'Thabo Mokoena',
+        userId: 'INV-2026-4402'
+      },
+      4: {
+        badge: 'SCREENSHOT 4 OF 4',
+        title: 'Centralized Academic Communication Hub, Course Materials & Executive Analytics Dashboard',
+        actor: 'Primary Users: College Management, Instructors & Enrolled Students',
+        trace: 'Traceability: FR-07, FR-08, FR-10',
+        rolePill: 'Active Actor: College Management / Principal',
+        avatar: 'CM',
+        userName: 'Prof. M. Ndlovu',
+        userId: 'EXEC-01 (Principal)'
+      }
+    };
+
+    function switchView(num) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('view-' + i).classList.toggle('active', i === num);
+        document.getElementById('tab-' + i).classList.toggle('active', i === num);
+      }
+      const m = viewMeta[num];
+      document.getElementById('screen-badge-text').textContent = m.badge;
+      document.getElementById('screen-title-text').textContent = m.title;
+      document.getElementById('actor-pill-text').textContent = m.actor;
+      document.getElementById('trace-pill-text').textContent = m.trace;
+      document.getElementById('active-role-pill').textContent = m.rolePill;
+      document.getElementById('active-avatar').textContent = m.avatar;
+      document.getElementById('active-user-name').textContent = m.userName;
+      document.getElementById('active-user-id').textContent = m.userId;
+    }
+
+    // Support URL query parameter ?view=1..4 for automated screenshot capture
+    const params = new URLSearchParams(window.location.search);
+    const v = parseInt(params.get('view'), 10);
+    if (v >= 1 && v <= 4) {
+      switchView(v);
+    }
+  </script>
+</body>
+</html>
